@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
+import {toast } from 'react-toastify';
 
 
 const CreatePost = () => {
@@ -20,7 +21,7 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('https://ai-image-generator-8qdc.onrender.com/api/v1/ai', {
+        const response = await fetch('http://localhost:8080/api/v1/ai', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -33,12 +34,12 @@ const CreatePost = () => {
         const data = await response.json();
         setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
-        alert(err);
+        toast.error(err);
       } finally {
         setGeneratingImg(false);
       }
     } else {
-      alert('Please provide proper prompt');
+      toast.error('Please provide proper prompt');
     }
   }
   const handleSubmit = async (e) => {
@@ -47,7 +48,7 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch('https://ai-image-generator-8qdc.onrender.com/api/v1/post', {
+        const response = await fetch('http://localhost:8080/api/v1/post', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -56,15 +57,15 @@ const CreatePost = () => {
         });
 
         await response.json();
-        alert('Success');
+        toast.success('You shared your post successfully');
         navigate('/');
       } catch (err) {
-        alert(err);
+        toast.error(err);
       } finally {
         setLoading(false);
       }
     } else {
-      alert('Please generate an image with proper details');
+      toast.error('Please generate an image with proper details');
     }
   };
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
