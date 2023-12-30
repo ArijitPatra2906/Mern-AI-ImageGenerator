@@ -93,7 +93,7 @@ const App = () => {
                     <li>
                       <a
                         className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                        href="https://portfolio-arijit-patra.vercel.app/"
+                        href="https://arijitpatra.vercel.app/"
                       >
                         Portfolio
                       </a>
